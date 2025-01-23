@@ -24,6 +24,9 @@ var (
 
 	// UNAUTHORIZED api status
 	UNAUTHORIZED = &Resp{401, "未授权", nil}
+
+	// DataSourceIsNotExist api status
+	DataSourceIsNotExist = &Resp{401, "数据源不存在", nil}
 )
 
 // Fail return fail resp

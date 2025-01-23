@@ -1,10 +1,10 @@
-package repository_impl
+package persistence
 
 import (
 	"easydbTools/internal/common/error_code"
-	"easydbTools/internal/domain/database/model"
-	"easydbTools/internal/domain/datasource/repository"
-	"easydbTools/internal/infrastructure/adapter/persistence/datasource/repository_impl"
+	"easydbTools/internal/domain/mysql/model"
+	"easydbTools/internal/domain/mysql/repository"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -16,7 +16,7 @@ type DatabaseRepositoryImpl struct {
 // NewDatabaseRepositoryImpl returns a new instance of RepositoryImpl
 func NewDatabaseRepositoryImpl() *DatabaseRepositoryImpl {
 	return &DatabaseRepositoryImpl{
-		datasourceRepository: repository_impl.NewDataSourceRepositoryImpl(),
+		datasourceRepository: NewDataSourceRepositoryImpl(),
 	}
 }
 
@@ -43,12 +43,14 @@ func (r *DatabaseRepositoryImpl) GetAll(dataSourceId string) ([]model.Database, 
 
 // Create a database
 func (r *DatabaseRepositoryImpl) Create(database model.Database) error {
-	//_, err := r.db.Exec(fmt.Sprintf("CREATE DATABASE %s DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;", database.Name))
-	return nil
+	connect := r.datasourceRepository.ConnectById(database.DataSourceId)
+	_, err := connect.Exec(fmt.Sprintf("CREATE DATABASE %s DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;", database.Name))
+	return err
 }
 
 // Drop a database
 func (r *DatabaseRepositoryImpl) Drop(database model.Database) error {
-	//_, err := r.db.Exec(fmt.Sprintf("DROP DATABASE %s;", database.Name))
-	return nil
+	connect := r.datasourceRepository.ConnectById(database.DataSourceId)
+	_, err := connect.Exec(fmt.Sprintf("DROP DATABASE %s;", database.Name))
+	return err
 }

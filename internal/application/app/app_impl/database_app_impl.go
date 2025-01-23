@@ -3,8 +3,8 @@ package app_impl
 import (
 	"easydbTools/internal/application/cmd"
 	"easydbTools/internal/application/dto"
-	"easydbTools/internal/domain/database/repository"
-	"easydbTools/internal/infrastructure/adapter/persistence/database/repository_impl"
+	"easydbTools/internal/domain/mysql/repository"
+	"easydbTools/internal/infrastructure/adapter/mysql/persistence"
 	"easydbTools/internal/infrastructure/convert"
 )
 
@@ -16,7 +16,7 @@ type DatabaseAppImpl struct {
 // NewDatabaseAppImpl new DatabaseApp
 func NewDatabaseAppImpl() *DatabaseAppImpl {
 	return &DatabaseAppImpl{
-		databaseRepository: repository_impl.NewDatabaseRepositoryImpl(),
+		databaseRepository: persistence.NewDatabaseRepositoryImpl(),
 	}
 }
 
@@ -35,6 +35,7 @@ func (app *DatabaseAppImpl) List(dataSourceId string) ([]dto.DatabaseDTO, error)
 
 // Create a database
 func (app *DatabaseAppImpl) Create(cmd cmd.DatabaseCreateCmd) error {
+	// convert cmd to domain
 	database := convert.DatabaseCreateCmdToDatabase(cmd)
 	err := app.databaseRepository.Create(database)
 	return err
@@ -42,6 +43,7 @@ func (app *DatabaseAppImpl) Create(cmd cmd.DatabaseCreateCmd) error {
 
 // Drop a database
 func (app *DatabaseAppImpl) Drop(cmd cmd.DatabaseDropCmd) error {
+	// convert cmd to domain
 	database := convert.DatabaseDropCmdToDatabase(cmd)
 	err := app.databaseRepository.Drop(database)
 	return err

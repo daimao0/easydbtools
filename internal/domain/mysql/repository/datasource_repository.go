@@ -2,7 +2,7 @@ package repository
 
 import (
 	"database/sql"
-	"easydbTools/internal/domain/datasource/model"
+	"easydbTools/internal/domain/mysql/model"
 )
 
 // DataSourceRepository interface

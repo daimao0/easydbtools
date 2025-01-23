@@ -2,6 +2,7 @@ package http
 
 import (
 	"easydbTools/internal/adapter/http/controller"
+	intercpter "easydbTools/internal/adapter/http/filter/interceptor"
 	"easydbTools/internal/adapter/http/filter/valid"
 	"easydbTools/internal/adapter/http/request"
 	"github.com/gin-contrib/cors"
@@ -12,9 +13,9 @@ import (
 // RegisterRoutes register all routes
 func RegisterRoutes(engine *gin.Engine) {
 	// new controller
-	databaseController := controller.NewDatabaseController()
 	datasourceController := controller.NewDatasourceController()
-
+	databaseController := controller.NewDatabaseController()
+	tableController := controller.NewTableController()
 	// handle cors config
 	config := cors.Config{
 		AllowOrigins:     []string{"*"}, // 允许所有来源
@@ -25,6 +26,7 @@ func RegisterRoutes(engine *gin.Engine) {
 		MaxAge:           12 * time.Hour, // 预检请求的有效期
 	}
 	engine.Use(cors.New(config))
+	engine.Use(intercpter.DataSourceInterceptor)
 	// GET /api/v1/database/list
 	group := engine.Group("/api/")
 	v1 := group.Group("/v1")
@@ -40,6 +42,10 @@ func RegisterRoutes(engine *gin.Engine) {
 		databaseGroup.POST("register", valid.DataSourceRegisterRequestValid(&request.DatabaseDatasourceRequest{}), databaseController.RegisterDataSource)
 		databaseGroup.GET("/list", databaseController.List)
 		databaseGroup.POST("/create", valid.DatabaseCreateRequestValid(&request.DatabaseCreateRequest{}), databaseController.Create)
-		databaseGroup.DELETE("/drop", valid.DatabaseDropRequestValid(&request.DatabaseDropRequest{}), databaseController.Drop)
+		databaseGroup.DELETE("/drop/:name", valid.DatabaseDropRequestValid(), databaseController.Drop)
+	}
+	{
+		databaseGroup.GET("/:databaseName/tables", tableController.ListTables)
+		//databaseGroup.GET("/:databaseName/table/:tableName/column", tableController.ListTableColumns)
 	}
 }

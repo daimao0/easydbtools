@@ -3,8 +3,8 @@ package app_impl
 import (
 	"easydbTools/internal/application/app"
 	"easydbTools/internal/application/cmd"
-	"easydbTools/internal/domain/datasource/repository"
-	"easydbTools/internal/infrastructure/adapter/persistence/datasource/repository_impl"
+	"easydbTools/internal/domain/mysql/repository"
+	"easydbTools/internal/infrastructure/adapter/mysql/persistence"
 	"easydbTools/internal/infrastructure/convert"
 )
 
@@ -15,7 +15,7 @@ type DatasourceAppImpl struct {
 
 func NewDatasourceAppImpl() app.DataSourceApp {
 	return &DatasourceAppImpl{
-		DataSourceRepository: repository_impl.NewDataSourceRepositoryImpl(),
+		DataSourceRepository: persistence.NewDataSourceRepositoryImpl(),
 	}
 }
 

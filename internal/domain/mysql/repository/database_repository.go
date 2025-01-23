@@ -1,6 +1,8 @@
 package repository
 
-import "easydbTools/internal/domain/database/model"
+import (
+	"easydbTools/internal/domain/mysql/model"
+)
 
 // DatabaseRepository interface is used to define database operations
 type DatabaseRepository interface {

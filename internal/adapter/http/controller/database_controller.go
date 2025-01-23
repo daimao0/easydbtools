@@ -4,8 +4,9 @@ import (
 	"easydbTools/internal/adapter/http/request"
 	"easydbTools/internal/application/app"
 	"easydbTools/internal/application/app/app_impl"
+	"easydbTools/internal/application/cmd"
+	"easydbTools/internal/common/constant"
 	"easydbTools/internal/common/easytool/resp"
-	"easydbTools/internal/infrastructure/convert"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -44,9 +45,10 @@ func (databaseController *DatabaseController) Create(c *gin.Context) {
 		c.JSON(http.StatusOK, resp.INVALID_PARAM)
 		return
 	}
-	cmd := convert.DatabaseCreateRequestToDatabaseCreateCmd(createRequest)
-	// app create a database
-	err = databaseController.databaseApp.Create(cmd)
+	// convert request to cmd
+	createCmd := cmd.DatabaseCreateCmd{DataSourceId: c.GetHeader(constant.XDataSourceId), Name: createRequest.Name}
+	// create a database
+	err = databaseController.databaseApp.Create(createCmd)
 	if err != nil {
 		c.JSON(http.StatusOK, resp.Fail(err.Error()))
 		return
@@ -56,10 +58,9 @@ func (databaseController *DatabaseController) Create(c *gin.Context) {
 
 // Drop database
 func (databaseController *DatabaseController) Drop(c *gin.Context) {
-	dropRequest := request.DatabaseDropRequest{}
-	_ = c.BindJSON(&dropRequest)
-	cmd := convert.DatabaseDropRequestToDatabaseDropCmd(dropRequest)
-	err := databaseController.databaseApp.Drop(cmd)
+	//convert request to cmd
+	dropCmd := cmd.DatabaseDropCmd{DataSourceId: c.GetHeader(constant.XDataSourceId), Name: c.Param("name")}
+	err := databaseController.databaseApp.Drop(dropCmd)
 	if err != nil {
 		c.JSON(http.StatusOK, resp.Fail(err.Error()))
 		return

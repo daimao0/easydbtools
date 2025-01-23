@@ -1,10 +1,10 @@
-package repository_impl
+package persistence
 
 import (
 	"context"
 	"database/sql"
 	"easydbTools/internal/common/error_code"
-	"easydbTools/internal/domain/datasource/model"
+	"easydbTools/internal/domain/mysql/model"
 	"fmt"
 	"log"
 	"sync"

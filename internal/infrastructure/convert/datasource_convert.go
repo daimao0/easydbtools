@@ -4,7 +4,7 @@ import (
 	"easydbTools/internal/adapter/http/request"
 	"easydbTools/internal/application/cmd"
 	"easydbTools/internal/common/enum"
-	"easydbTools/internal/domain/datasource/model"
+	"easydbTools/internal/domain/mysql/model"
 )
 
 // DatasourceConnectCmdToDatasource  convert datasourceConnectCmd to datasource

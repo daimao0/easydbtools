@@ -54,21 +54,14 @@ func DatabaseCreateRequestValid(request *request.DatabaseCreateRequest) gin.Hand
 }
 
 // DatabaseDropRequestValid middleware for database drop request valid
-func DatabaseDropRequestValid(request *request.DatabaseDropRequest) gin.HandlerFunc {
+func DatabaseDropRequestValid() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		data, _ := c.GetRawData()
-		err := json.Unmarshal(data, request)
-		if err != nil {
-			c.JSON(http.StatusOK, resp.INVALID_PARAM)
-			c.Abort()
-			return
-		}
-		if str_util.IsBlank(request.Name) {
+		name := c.Param("name")
+		if str_util.IsBlank(name) {
 			c.JSON(http.StatusOK, resp.InvalidParam("database name cannot be blank "))
 			c.Abort()
 			return
 		}
-		c.Request.Body = io.NopCloser(bytes.NewBuffer(data))
 		c.Next()
 	}
 }
