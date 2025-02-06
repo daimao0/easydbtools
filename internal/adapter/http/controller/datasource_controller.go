@@ -27,7 +27,7 @@ func (dataSourceController *DataSourceController) TestConnect(c *gin.Context) {
 	_ = c.BindJSON(&dataSourceConnectRequest)
 	err := dataSourceController.dataSourceApp.TestConnect(convert.DataSourceConnectRequestToDatasourceConnectCmd(dataSourceConnectRequest))
 	if err != nil {
-		c.JSON(http.StatusOK, resp.SystemError(error_code.DATA_SOURCE_CONNECT_ERROR))
+		c.JSON(http.StatusOK, resp.SystemError(error_code.DataSourceConnectError))
 		return
 	}
 	c.JSON(http.StatusOK, resp.SUCCESS)
@@ -39,7 +39,7 @@ func (dataSourceController *DataSourceController) Connect(c *gin.Context) {
 	_ = c.BindJSON(&dataSourceConnectRequest)
 	err := dataSourceController.dataSourceApp.Connect(convert.DataSourceConnectRequestToDatasourceConnectCmd(dataSourceConnectRequest))
 	if err != nil {
-		c.JSON(http.StatusOK, resp.SystemError(error_code.DATA_SOURCE_CONNECT_ERROR))
+		c.JSON(http.StatusOK, resp.SystemError(error_code.DataSourceConnectError))
 		return
 	}
 	c.JSON(http.StatusOK, resp.SUCCESS)

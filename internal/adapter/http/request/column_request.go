@@ -1,7 +1,7 @@
-package dto
+package request
 
-// ColumnDTO is the data transfer object for a column
-type ColumnDTO struct {
+// ColumnCreateRequest create column request for create table
+type ColumnCreateRequest struct {
 	// Name column name
 	Name string `json:"name"`
 	// Type column type

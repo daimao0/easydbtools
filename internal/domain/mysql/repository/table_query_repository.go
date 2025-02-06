@@ -11,5 +11,5 @@ type TableQueryRepository interface {
 	ListTableNames(database model.Database) ([]string, error)
 
 	// GetTable is used to get table information from the database
-	GetTable(params params.TableQueryParams) (model.Table, error)
+	GetTable(params *params.TableQueryParams) (*model.Table, error)
 }

@@ -172,3 +172,53 @@ func ToUInt32(a any) uint32 {
 	}
 	return 0
 }
+
+func ToInt(a any) int {
+
+	switch v := a.(type) {
+	case uint:
+		return int(v)
+	case uint8:
+		return int(v)
+	case uint16:
+		return int(v)
+	case uint32:
+		return int(v)
+	case int:
+		if v >= 0 {
+			return v
+		}
+	case int8:
+		if v >= 0 {
+			return int(v)
+		}
+	case int16:
+		if v >= 0 {
+			return int(v)
+		}
+	case int32:
+		if v >= 0 {
+			return int(v)
+		}
+	case int64:
+		if v >= 0 {
+			return int(v)
+		}
+	case float32:
+		if v >= 0 {
+			return int(v)
+		}
+	case float64:
+		if v >= 0 {
+			return int(v)
+		}
+	case string:
+		num, err := strconv.ParseUint(v, 10, 32)
+		if err == nil {
+			return int(num)
+		}
+	default:
+		return 0
+	}
+	return 0
+}

@@ -24,7 +24,7 @@ func NewDatabaseRepositoryImpl() *DatabaseRepositoryImpl {
 func (r *DatabaseRepositoryImpl) GetAll(dataSourceId string) ([]model.Database, error) {
 	connect := r.datasourceRepository.ConnectById(dataSourceId)
 	if connect == nil {
-		return nil, error_code.DATA_SOURCE_CONNECT_NOT_EXISTS.Err
+		return nil, error_code.DataSourceConnectNotExists.Err
 	}
 	query, err := connect.Query("SHOW DATABASES")
 	defer query.Close()

@@ -14,8 +14,11 @@ type ErrorCode struct {
 }
 
 var (
-	DATA_SOURCE_CONNECT_ERROR      = &ErrorCode{10001, "数据源连接异常", errors.New("数据源连接异常")}
-	DATA_SOURCE_CONNECT_NOT_EXISTS = &ErrorCode{10002, "数据源不存在", errors.New("数据源不存在")}
+	DataSourceConnectError     = &ErrorCode{10001, "数据源连接异常", errors.New("数据源连接异常")}
+	DataSourceConnectNotExists = &ErrorCode{10002, "数据源不存在", errors.New("数据源不存在")}
+	TablePkNotExists           = &ErrorCode{30001, "表主键不存在", errors.New("表主键不存在")}
+	TableColumnNotExists       = &ErrorCode{30002, "表字段不存在", errors.New("表字段不存在")}
+	IndexNotContainsColumn     = &ErrorCode{40001, "索引没有指定字段", errors.New("索引没有指定字段")}
 )
 
 func (errCode *ErrorCode) Error() string {

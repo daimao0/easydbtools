@@ -1,8 +1,10 @@
 package controller
 
 import (
+	"easydbTools/internal/adapter/http/request"
 	"easydbTools/internal/application/app"
 	"easydbTools/internal/application/app/app_impl"
+	"easydbTools/internal/application/cmd"
 	"easydbTools/internal/application/query"
 	"easydbTools/internal/common/constant"
 	"easydbTools/internal/common/easytool/resp"
@@ -40,11 +42,65 @@ func (t *TableController) GetTable(c *gin.Context) {
 	databaseName := c.Param("databaseName")
 	tableName := c.Param("tableName")
 	header := c.GetHeader(constant.XDataSourceId)
-	tableQuery := query.TableQuery{DataSourceId: databaseName, DatabaseName: tableName, TableName: header}
-	column, err := t.tableApp.GetTable(tableQuery)
+	tableQuery := query.TableQuery{DataSourceId: header, DatabaseName: databaseName, TableName: tableName}
+	tableDTO, err := t.tableApp.GetTable(tableQuery)
 	if err != nil {
 		c.JSON(http.StatusOK, resp.Fail(err.Error()))
 		return
 	}
-	c.JSON(http.StatusOK, resp.Success(column))
+	c.JSON(http.StatusOK, resp.Success(tableDTO))
+}
+
+// CreateTable to create table
+func (t *TableController) CreateTable(c *gin.Context) {
+	databaseName := c.Param("databaseName")
+	header := c.GetHeader(constant.XDataSourceId)
+	req := &request.TableCreateRequest{}
+	err := c.ShouldBindJSON(req)
+	if err != nil {
+		c.JSON(http.StatusOK, resp.InvalidParam(err.Error()))
+		return
+	}
+	tableCmd := &cmd.TableCreateCmd{DataSourceId: header, DatabaseName: databaseName, Name: req.Name, Desc: req.Desc}
+	tableCmd.Columns = &[]cmd.ColumnCreateCmd{}
+	for _, column := range *req.Columns {
+		*tableCmd.Columns = append(*tableCmd.Columns, cmd.ColumnCreateCmd{
+			Name:    column.Name,
+			Type:    column.Type,
+			Size:    column.Size,
+			Points:  column.Points,
+			Default: column.Default,
+			NotNull: column.NotNull,
+			Comment: column.Comment,
+			Pk:      column.Pk,
+		})
+	}
+	tableCmd.Indexes = &[]cmd.IndexCmd{}
+	for _, indexRequest := range *req.Indexes {
+		*tableCmd.Indexes = append(*tableCmd.Indexes, cmd.IndexCmd{
+			Name:       indexRequest.Name,
+			Unique:     indexRequest.Unique,
+			ColumnName: indexRequest.ColumnName,
+			Comment:    indexRequest.Comment,
+		})
+	}
+	err = t.tableApp.CreateTable(tableCmd)
+	if err != nil {
+		c.JSON(http.StatusOK, resp.Fail(err.Error()))
+		return
+	}
+	c.JSON(http.StatusOK, resp.Success(tableCmd))
+}
+
+// DropTable to drop table
+func (t *TableController) DropTable(c *gin.Context) {
+	databaseName := c.Param("databaseName")
+	tableName := c.Param("tableName")
+	header := c.GetHeader(constant.XDataSourceId)
+	err := t.tableApp.DropTable(cmd.TableDropCmd{DataSourceId: header, DatabaseName: databaseName, Name: tableName})
+	if err != nil {
+		c.JSON(http.StatusOK, resp.Fail(err.Error()))
+		return
+	}
+	c.JSON(http.StatusOK, resp.Success(nil))
 }

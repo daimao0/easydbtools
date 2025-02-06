@@ -1,7 +1,7 @@
-package model
+package cmd
 
-// Column is the domain model for a column
-type Column struct {
+// ColumnCreateCmd create column cmd for create table
+type ColumnCreateCmd struct {
 	// Name column name
 	Name string
 	// Type column type

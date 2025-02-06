@@ -1,6 +1,7 @@
 package app
 
 import (
+	"easydbTools/internal/application/cmd"
 	"easydbTools/internal/application/dto"
 	"easydbTools/internal/application/query"
 )
@@ -12,4 +13,10 @@ type TableApp interface {
 
 	// GetTable returns a list of columns
 	GetTable(tableQuery query.TableQuery) (dto.TableDTO, error)
+
+	// CreateTable creates a table
+	CreateTable(tableCreateCmd *cmd.TableCreateCmd) error
+
+	// DropTable drops a table
+	DropTable(dropCmd cmd.TableDropCmd) error
 }

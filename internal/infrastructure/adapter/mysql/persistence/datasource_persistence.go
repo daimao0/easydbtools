@@ -38,7 +38,7 @@ func (repo *DataSourceRepositoryImpl) TestConnect(dataSource model.DataSource) e
 	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s)/", dataSource.Username, dataSource.Password, dataSource.Address)
 	open, err := sql.Open(driverName, dataSourceName)
 	if open == nil || err != nil {
-		return error_code.DATA_SOURCE_CONNECT_ERROR
+		return error_code.DataSourceConnectError
 	}
 	defer func(open *sql.DB) {
 		err := open.Close()

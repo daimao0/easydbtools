@@ -16,6 +16,7 @@ func RegisterRoutes(engine *gin.Engine) {
 	datasourceController := controller.NewDatasourceController()
 	databaseController := controller.NewDatabaseController()
 	tableController := controller.NewTableController()
+	columnController := controller.NewColumnController()
 	// handle cors config
 	config := cors.Config{
 		AllowOrigins:     []string{"*"}, // 允许所有来源
@@ -38,14 +39,22 @@ func RegisterRoutes(engine *gin.Engine) {
 	}
 	// database route group
 	databaseGroup := v1.Group("/database")
+	// database
 	{
 		databaseGroup.POST("register", valid.DataSourceRegisterRequestValid(&request.DatabaseDatasourceRequest{}), databaseController.RegisterDataSource)
 		databaseGroup.GET("/list", databaseController.List)
 		databaseGroup.POST("/create", valid.DatabaseCreateRequestValid(&request.DatabaseCreateRequest{}), databaseController.Create)
 		databaseGroup.DELETE("/drop/:name", valid.DatabaseDropRequestValid(), databaseController.Drop)
 	}
+	// tables
 	{
 		databaseGroup.GET("/:databaseName/tables", tableController.ListTables)
-		//databaseGroup.GET("/:databaseName/table/:tableName/column", tableController.ListTableColumns)
+		databaseGroup.GET("/:databaseName/table/:tableName", tableController.GetTable)
+		databaseGroup.POST("/:databaseName/table", tableController.CreateTable)
+		databaseGroup.DELETE("/:databaseName/table/:tableName", tableController.DropTable)
+	}
+	// columns
+	{
+		databaseGroup.GET("/:databaseName/table/:tableName/columns", columnController.ListColumnsByTable)
 	}
 }
