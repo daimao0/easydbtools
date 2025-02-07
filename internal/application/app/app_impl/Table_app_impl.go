@@ -4,6 +4,7 @@ import (
 	"easydbTools/internal/application/cmd"
 	"easydbTools/internal/application/dto"
 	"easydbTools/internal/application/query"
+	"easydbTools/internal/common/easytool/common/page"
 	"easydbTools/internal/domain/mysql/model"
 	"easydbTools/internal/domain/mysql/repository"
 	"easydbTools/internal/domain/mysql/repository/params"
@@ -92,4 +93,11 @@ func (t *TableAppImpl) CreateTable(tableCreateCmd *cmd.TableCreateCmd) error {
 func (t *TableAppImpl) DropTable(dropCmd cmd.TableDropCmd) error {
 	err := t.tableCmdRepository.DropTable(model.Table{Name: dropCmd.Name, Database: &model.Database{Name: dropCmd.DatabaseName, DataSourceId: dropCmd.DataSourceId}})
 	return err
+}
+
+// PageTableData returns a list of table data
+func (t *TableAppImpl) PageTableData(tableQuery *query.TableDataQuery) *page.Page[[]map[string]interface{}] {
+	q := tableQuery.TableQuery
+	pageParams := params.TablePageParams{TableQueryParams: &params.TableQueryParams{DataSourceId: q.DataSourceId, DatabaseName: q.DatabaseName, TableName: q.TableName}, PageNo: tableQuery.PageNo, PageSize: tableQuery.PageSize}
+	return t.tableQueryRepository.PageTableData(&pageParams)
 }

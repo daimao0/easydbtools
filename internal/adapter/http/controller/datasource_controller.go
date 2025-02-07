@@ -4,7 +4,7 @@ import (
 	"easydbTools/internal/adapter/http/request"
 	"easydbTools/internal/application/app"
 	"easydbTools/internal/application/app/app_impl"
-	"easydbTools/internal/common/easytool/resp"
+	"easydbTools/internal/common/easytool/common/resp"
 	"easydbTools/internal/common/error_code"
 	"easydbTools/internal/infrastructure/convert"
 	"github.com/gin-gonic/gin"

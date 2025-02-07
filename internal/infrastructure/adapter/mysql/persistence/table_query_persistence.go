@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"database/sql"
+	"easydbTools/internal/common/easytool/common/page"
 	"easydbTools/internal/common/easytool/convert"
 	"easydbTools/internal/common/easytool/util/str_util"
 	"easydbTools/internal/domain/mysql/model"
@@ -179,4 +180,17 @@ func (t *TableQueryRepositoryImpl) parseCreateTableSQL(params *params.TableQuery
 		_ = rows.Scan(&table, &createSQL)
 	}
 	return createSQL.String
+}
+
+// PageTableData is used to get table data from the database
+func (t *TableQueryRepositoryImpl) PageTableData(param *params.TablePageParams) *page.Page[[]map[string]interface{}] {
+	connect := t.datasourceRepository.ConnectById(param.TableQueryParams.DataSourceId)
+	totalSQL := fmt.Sprintf("SELECT COUNT(0) FROM %s.%s;", param.TableQueryParams.DatabaseName, param.TableQueryParams.TableName)
+	query, err := connect.Query(totalSQL)
+	total := 0
+	if query.Next() {
+		query.Scan(&total)
+	}
+	fmt.Println(query, err)
+	return nil
 }

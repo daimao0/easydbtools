@@ -3,7 +3,7 @@ package valid
 import (
 	"bytes"
 	"easydbTools/internal/adapter/http/request"
-	"easydbTools/internal/common/easytool/resp"
+	"easydbTools/internal/common/easytool/common/resp"
 	"easydbTools/internal/common/easytool/util/str_util"
 	"encoding/json"
 	"github.com/gin-gonic/gin"

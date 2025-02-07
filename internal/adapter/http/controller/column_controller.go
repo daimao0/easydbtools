@@ -3,7 +3,7 @@ package controller
 import (
 	"easydbTools/internal/application/query"
 	"easydbTools/internal/common/constant"
-	"easydbTools/internal/common/easytool/resp"
+	"easydbTools/internal/common/easytool/common/resp"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

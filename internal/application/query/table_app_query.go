@@ -20,3 +20,16 @@ type TableQuery struct {
 	//TableName is the name of the table
 	TableName string
 }
+
+// TableDataQuery represents a query for table service
+type TableDataQuery struct {
+
+	// TableQuery is the info of the table
+	TableQuery *TableQuery
+
+	// PageNo is the page number
+	PageNo int
+
+	// PageSize is the page size
+	PageSize int
+}

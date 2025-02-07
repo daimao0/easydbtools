@@ -52,6 +52,7 @@ func RegisterRoutes(engine *gin.Engine) {
 		databaseGroup.GET("/:databaseName/table/:tableName", tableController.GetTable)
 		databaseGroup.POST("/:databaseName/table", tableController.CreateTable)
 		databaseGroup.DELETE("/:databaseName/table/:tableName", tableController.DropTable)
+		databaseGroup.GET("/:databaseName/table/:tableName/page", tableController.PageTableData)
 	}
 	// columns
 	{

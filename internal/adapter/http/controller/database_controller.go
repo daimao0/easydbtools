@@ -6,7 +6,7 @@ import (
 	"easydbTools/internal/application/app/app_impl"
 	"easydbTools/internal/application/cmd"
 	"easydbTools/internal/common/constant"
-	"easydbTools/internal/common/easytool/resp"
+	"easydbTools/internal/common/easytool/common/resp"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

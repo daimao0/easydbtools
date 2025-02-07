@@ -1,7 +1,7 @@
 package intercpter
 
 import (
-	"easydbTools/internal/common/easytool/resp"
+	"easydbTools/internal/common/easytool/common/resp"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"

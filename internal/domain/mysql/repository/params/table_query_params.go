@@ -11,3 +11,15 @@ type TableQueryParams struct {
 	//TableName is the name of the table
 	TableName string
 }
+
+type TablePageParams struct {
+
+	// TableQueryParams is the table info
+	TableQueryParams *TableQueryParams
+
+	//PageNo is the page number
+	PageNo int
+
+	//PageSize is the page size
+	PageSize int
+}

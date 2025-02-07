@@ -7,7 +7,8 @@ import (
 	"easydbTools/internal/application/cmd"
 	"easydbTools/internal/application/query"
 	"easydbTools/internal/common/constant"
-	"easydbTools/internal/common/easytool/resp"
+	"easydbTools/internal/common/easytool/common/resp"
+	"easydbTools/internal/common/easytool/convert"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -103,4 +104,15 @@ func (t *TableController) DropTable(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, resp.Success(nil))
+}
+
+// PageTableData to page query data
+func (t *TableController) PageTableData(c *gin.Context) {
+	databaseName := c.Param("databaseName")
+	tableName := c.Param("tableName")
+	pageNO := c.Param("pageNO")
+	pageSize := c.Param("pageSize")
+	dataSourceId := c.GetHeader(constant.XDataSourceId)
+	dataQuery := query.TableDataQuery{TableQuery: &query.TableQuery{DataSourceId: dataSourceId, DatabaseName: databaseName, TableName: tableName}, PageNo: convert.ToInt(pageNO), PageSize: convert.ToInt(pageSize)}
+	t.tableApp.PageTableData(&dataQuery)
 }
